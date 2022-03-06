@@ -1,4 +1,4 @@
-import "./styles.css";
+
 //IMPORTS
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const showUserButton = document.querySelector(".showUserButton");
