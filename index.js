@@ -1,4 +1,4 @@
-import handleSubmit from './handlers/handleSubmit.js'
+import "./styles.css";
 //IMPORTS
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const showUserButton = document.querySelector(".showUserButton");
@@ -17,28 +17,21 @@ let inputsEditForm;
 const assignedToDropDownOptions = modal.querySelector("#assigned_to");
 const assignedToDropDownOptionsEdit = modalEdit.querySelector("#assigned_to");
 
-const showUserButton = document.querySelector('.showUserButton');
-const showTaskButton = document.querySelector('.showTaskButton');
-
 const highPriorityList = document.querySelector(".high_priority_list");
 const midPriorityList = document.querySelector(".mid_priority_list");
 const lowPriorityList = document.querySelector(".low_priority_list");
 
- const draggables = document.querySelectorAll('.draggable')
- const containers = document.querySelectorAll('.container')
-
-
+const draggables = document.querySelectorAll(".draggable");
+const containers = document.querySelectorAll(".container");
 
 //------------------------------------------------------------------------------
 
 //###################
 //*****
 //STATES
-let userData =[];
+let userData = [];
 export var allTask = {};
 //###################
-
-
 
 //*****
 //fetch user data
@@ -62,12 +55,14 @@ async function fetchUserData() {
   //!!operations to be carried out when user_data_is_fetched
   // A) Store in local State
   console.log(data.users);
-  userData = [...data.users]
+  userData = [...data.users];
   // B) add userName to DropDownOptionOF createTask(deligate to)
-  let html = userData.map((el, i) => {
-    console.log(el);
-    return `<option value=${el.id}>${el.name}</option>`
-  }).join('');
+  let html = userData
+    .map((el, i) => {
+      console.log(el);
+      return `<option value=${el.id}>${el.name}</option>`;
+    })
+    .join("");
   assignedToDropDownOptions.innerHTML = html;
   assignedToDropDownOptionsEdit.innerHTML = html;
   // C) Also, Now catch all the inputs
@@ -77,26 +72,8 @@ async function fetchUserData() {
   inputsEditForm = modalEdit.querySelectorAll(".input");
   console.log(inputsEditForm);
 
-
-
-
-
-
   return data;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //*****
 //modal open when create-new-task clicked
@@ -106,14 +83,11 @@ function handleNewTaskClick(event) {
   modal.classList.add("show");
   // createTaskButton.removeAttribute("disabled");
   // editTaskButton.setAttribute("disabled", true);
-
-
-
 }
 
 //*****
 //modal open when edit-task clicked
-function handleEditTaskClick(target ) {
+function handleEditTaskClick(target) {
   console.log("Here");
 
   modalEdit.classList.remove("hidden");
@@ -121,9 +95,7 @@ function handleEditTaskClick(target ) {
   // createTaskButton.setAttribute("disabled", true);
   // editTaskButton.removeAttribute("disabled");
 
-  inputFormEdit.setAttribute("data-taskid", `${target .id}`)
-
-
+  inputFormEdit.setAttribute("data-taskid", `${target.id}`);
 }
 
 //*****
@@ -148,10 +120,8 @@ function handleTaskCreateClick(event) {
   handleSubmit(event);
   event.target.disabled = true;
 
-
   // A) API FUnction [[++++]]
   async function handleSubmit(event) {
-
     event.preventDefault();
     console.log(event.target);
 
@@ -160,23 +130,25 @@ function handleTaskCreateClick(event) {
 
     const createData = new URLSearchParams();
 
-    for(const pair of new FormData(event.target)){
-      createData.append(pair[0], pair[1])
+    for (const pair of new FormData(event.target)) {
+      createData.append(pair[0], pair[1]);
     }
-
 
     const requestOptions = {
-      method: 'POST',
+      method: "POST",
       headers: myHeaders,
       body: createData,
-      redirect: 'follow'
-    }
+      redirect: "follow"
+    };
 
-    const request = await fetch('https://devza.com/tests/tasks/create', requestOptions);
+    const request = await fetch(
+      "https://devza.com/tests/tasks/create",
+      requestOptions
+    );
 
     const data = await request.json();
 
-    console.log(data);//here you get id...store id to operate delete as well
+    console.log(data); //here you get id...store id to operate delete as well
 
     //storing in local state
     let taskObj = {
@@ -187,16 +159,15 @@ function handleTaskCreateClick(event) {
 
     inputs.forEach((item, i) => {
       console.log(item);
-      return taskObj[`${item.name}`] = item.value;
-
+      return (taskObj[`${item.name}`] = item.value);
     });
-    const id = data.taskid
+    const id = data.taskid;
     taskObj.taskid = id;
     userData.forEach((el, i) => {
-      if(el.id === taskObj.assigned_to) {
+      if (el.id === taskObj.assigned_to) {
         taskObj.assigned_name = el.name;
       }
-    })
+    });
     // console.log(taskObj.assigned_name);
     // taskObj.assigned_name = id;
 
@@ -205,7 +176,7 @@ function handleTaskCreateClick(event) {
     // B) Store in Local
     const oldTask = allTask;
 
-    allTask = {...oldTask, [`${id}`]:{...taskObj}};
+    allTask = { ...oldTask, [`${id}`]: { ...taskObj } };
 
     console.log(taskObj);
     console.log(allTask);
@@ -213,9 +184,7 @@ function handleTaskCreateClick(event) {
     inputs.forEach((item, i) => {
       // console.log(item);
       item.value = "";
-
     });
-
 
     // c) display
     displayTask(allTask);
@@ -223,21 +192,15 @@ function handleTaskCreateClick(event) {
     // d) clear the form
     handleTaskCloseClick();
   }
-
-
-
-
-
 }
 
 //*****
 //task list fetch function
 async function fetchFromTaskList() {
-
-  const response = await fetch('https://devza.com/tests/tasks/list', {
-    method: 'get',
-    headers :{
-      AuthToken: "UrM4YHgb1FcqEf1tuKwmAMMX5MxFZ12a",
+  const response = await fetch("https://devza.com/tests/tasks/list", {
+    method: "get",
+    headers: {
+      AuthToken: "UrM4YHgb1FcqEf1tuKwmAMMX5MxFZ12a"
     }
   });
 
@@ -248,11 +211,10 @@ async function fetchFromTaskList() {
   return data;
 }
 
-
 function displayTask(allTask) {
   console.log("@--+>", allTask);
-  const list_of_all_id= [...Object.keys(allTask)]
-  const corresponding_id_data = [...Object.values(allTask)]
+  const list_of_all_id = [...Object.keys(allTask)];
+  const corresponding_id_data = [...Object.values(allTask)];
 
   let highPriorityListDisplay = [];
   let midPriorityListDisplay = [];
@@ -260,31 +222,35 @@ function displayTask(allTask) {
 
   list_of_all_id.forEach((idValue, i) => {
     console.log(corresponding_id_data[i].priority);
-    if(corresponding_id_data[i].priority == 1){
+    if (corresponding_id_data[i].priority == 1) {
       console.log(corresponding_id_data[i]);
       highPriorityListDisplay.push(corresponding_id_data[i]);
     }
-    if(corresponding_id_data[i].priority == 2){
+    if (corresponding_id_data[i].priority == 2) {
       console.log(corresponding_id_data[i]);
       midPriorityListDisplay.push(corresponding_id_data[i]);
     }
-    if(corresponding_id_data[i].priority == 3){
+    if (corresponding_id_data[i].priority == 3) {
       console.log(corresponding_id_data[i]);
       lowPriorityListDisplay.push(corresponding_id_data[i]);
     }
   });
 
-  const whatToLoop = [highPriorityListDisplay, midPriorityListDisplay, lowPriorityListDisplay];
+  const whatToLoop = [
+    highPriorityListDisplay,
+    midPriorityListDisplay,
+    lowPriorityListDisplay
+  ];
   console.log(whatToLoop);
   whatToLoop.forEach((priority, i) => {
     console.log(priority);
 
-
     let html = "";
 
-      html += priority.map((item, i) => {
-        console.log("---->" +item);
-        return (`
+    html += priority
+      .map((item, i) => {
+        console.log("---->" + item);
+        return `
           <li id="one" draggable="true">
                   <span class="task_text">${item.message}</span>
 
@@ -332,30 +298,25 @@ function displayTask(allTask) {
                         <br />
                         </li>
                         <div></div>
-                        `)
-                      }).join("");
+                        `;
+      })
+      .join("");
 
-
-                      if(i==0 ){
-                        // && highPriorityList !== null){
-                        console.log('why is it so?');
-                        highPriorityList.innerHTML = html
-                      };
-                      if(i==1 ){
-                        // && midPriorityList !== null){
-                        midPriorityList.innerHTML = html
-                      };
-                      if(i==2 ){
-                        // && lowPriorityList !== null){
-                        lowPriorityList.innerHTML = html
-                      };
+    if (i == 0) {
+      // && highPriorityList !== null){
+      console.log("why is it so?");
+      highPriorityList.innerHTML = html;
+    }
+    if (i == 1) {
+      // && midPriorityList !== null){
+      midPriorityList.innerHTML = html;
+    }
+    if (i == 2) {
+      // && lowPriorityList !== null){
+      lowPriorityList.innerHTML = html;
+    }
   });
-
 }
-
-
-
-
 
 // //*****
 // //Drag function
@@ -401,18 +362,12 @@ function displayTask(allTask) {
 //
 //
 
-
-
-
-
-
-
 //*****
 //deleteTask function
-async function deleteTask(taskid){
+async function deleteTask(taskid) {
   // B) Local Function
 
-  console.log('** ', taskid);
+  console.log("** ", taskid);
   delete allTask[`${taskid}`];
   highPriorityList.innerHTML = "";
   displayTask(allTask);
@@ -422,197 +377,143 @@ async function deleteTask(taskid){
   myHeaders.append("AuthToken", "UrM4YHgb1FcqEf1tuKwmAMMX5MxFZ12a");
 
   const formdata = new FormData();
-  formdata.append("taskid",`${taskid}`)
+  formdata.append("taskid", `${taskid}`);
 
   const requestOptions = {
-    method: 'POST',
+    method: "POST",
     headers: myHeaders,
     body: formdata,
-    redirect: 'follow'
-  }
+    redirect: "follow"
+  };
 
-  const request = await fetch('https://devza.com/tests/tasks/delete', requestOptions);
+  const request = await fetch(
+    "https://devza.com/tests/tasks/delete",
+    requestOptions
+  );
 
   const data = await request.json();
 
-  console.log(data)
-
+  console.log(data);
 }
 
 //*****
 //Edit Task open Modal
 async function editTask(target) {
   console.log(target);
-  const corresponding_id_data = [...Object.values(allTask)]
+  const corresponding_id_data = [...Object.values(allTask)];
 
   //loop allTask..find id
   corresponding_id_data.forEach((currentValue, i) => {
-
-    if(currentValue.taskid === target.id){
+    if (currentValue.taskid === target.id) {
       // console.log(item);
-      const preSetValues = [...Object.values(currentValue)]
+      const preSetValues = [...Object.values(currentValue)];
       inputsEditForm.forEach((itemm, i) => {
         // console.log(currentValue);
-        return itemm.value = preSetValues[i];
-
+        return (itemm.value = preSetValues[i]);
       });
 
       handleEditTaskClick(target);
-
-
     }
-
   });
-
-  // editTaskClick()
-
-
-  // present another form with preset value of that id...
-  //
-  // and edit
-
-  // var myHeaders = new Headers();
-  // myHeaders.append("AuthToken", "UrM4YHgb1FcqEf1tuKwmAMMX5MxFZ12a");
-  //
-  // const createData = new URLSearchParams();
-  //
-  // for(const pair of new FormData(inputForm)){
-  //   createData.append(pair[0], pair[1])
-  // }
-  //
-  // createData.append('taskid', `${target.id}`)
-  //
-  // var requestOptions = {
-  //   method: 'POST',
-  //   headers: myHeaders,
-  //   body: createData,
-  //   redirect: 'follow'
-  // };
-  //
-  // fetch("https://devza.com/tests/tasks/update", requestOptions)
-  //   .then(response => response.text())
-  //   .then(result => console.log(result))
-  //   .catch(error => console.log('error', error));
-  //
-  // inputs.forEach((item, i) => {
-  //   // console.log(item);
-  //   item.value = "";
-  //
-  // });
-
 }
 
 //*****
 // Edit task
- async function handleEditTaskSubmit(event) {
-   console.log("Here as well");
-   event.preventDefault();
+async function handleEditTaskSubmit(event) {
+  console.log("Here as well");
+  event.preventDefault();
 
+  var myHeaders = new Headers();
+  myHeaders.append("AuthToken", "UrM4YHgb1FcqEf1tuKwmAMMX5MxFZ12a");
 
-   var myHeaders = new Headers();
-   myHeaders.append("AuthToken", "UrM4YHgb1FcqEf1tuKwmAMMX5MxFZ12a");
+  const createData = new URLSearchParams();
 
-   const createData = new URLSearchParams();
+  for (const pair of new FormData(event.target)) {
+    createData.append(pair[0], pair[1]);
+  }
 
-   for(const pair of new FormData(event.target)){
-     createData.append(pair[0], pair[1])
-   }
+  createData.append("taskid", `${event.target.dataset.taskid}`);
+  console.log(event.target.dataset.taskid);
 
-   createData.append('taskid', `${event.target.dataset.taskid}`)
-   console.log(event.target.dataset.taskid);
+  var requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: createData,
+    redirect: "follow"
+  };
 
-   var requestOptions = {
-     method: 'POST',
-     headers: myHeaders,
-     body: createData,
-     redirect: 'follow'
-   };
+  const request = await fetch(
+    "https://devza.com/tests/tasks/update",
+    requestOptions
+  );
 
-   const request = await fetch('https://devza.com/tests/tasks/update', requestOptions);
+  const data = await request.json();
 
-   const data = await request.json();
+  console.log(data);
 
-   console.log(data);
+  let taskObj = {
+    // taskid:"",
+  };
 
+  console.log(inputsEditForm);
 
+  inputsEditForm.forEach((item, i) => {
+    console.log(item);
+    return (taskObj[`${item.name}`] = item.value);
+  });
+  const id = data.taskid;
+  taskObj.taskid = id;
+  userData.forEach((el, i) => {
+    if (el.id === taskObj.assigned_to) {
+      taskObj.assigned_name = el.name;
+    }
+  });
+  // console.log(taskObj.assigned_name);
+  // taskObj.assigned_name = id;
 
-   let taskObj = {
-     // taskid:"",
-   };
+  fetchFromTaskList();
 
-   console.log(inputsEditForm);
+  // B) Store in Local
+  const oldTask = allTask;
 
-   inputsEditForm.forEach((item, i) => {
-     console.log(item);
-     return taskObj[`${item.name}`] = item.value;
+  allTask = { ...oldTask, [`${id}`]: { ...taskObj } };
 
-   });
-   const id = data.taskid
-   taskObj.taskid = id;
-   userData.forEach((el, i) => {
-     if(el.id === taskObj.assigned_to) {
-       taskObj.assigned_name = el.name;
-     }
-   })
-   // console.log(taskObj.assigned_name);
-   // taskObj.assigned_name = id;
+  console.log(taskObj);
+  console.log(allTask);
 
-   fetchFromTaskList();
+  inputsEditForm.forEach((item, i) => {
+    // console.log(item);
+    item.value = "";
+  });
 
-   // B) Store in Local
-   const oldTask = allTask;
+  // c) display
+  displayTask(allTask);
 
-   allTask = {...oldTask, [`${id}`]:{...taskObj}};
-
-   console.log(taskObj);
-   console.log(allTask);
-
-   inputsEditForm.forEach((item, i) => {
-     // console.log(item);
-     item.value = "";
-
-   });
-
-
-   // c) display
-   displayTask(allTask);
-
-   // d) clear the form
-   handleEditCloseClick();
-
- }
-
+  // d) clear the form
+  handleEditCloseClick();
+}
 
 //******
 //Handle Delete Button on card
 function handleClickOn_H_L(event) {
   console.log(event.target.name);
-  if(event.target.name === "close"){
+  if (event.target.name === "close") {
     console.log(event.target);
 
     deleteTask(event.target.id);
-  }
-  else if (event.target.name === "edit") {
-
-    console.log(event.target.matches('form'));
-    editTask(event.target)
+  } else if (event.target.name === "edit") {
+    console.log(event.target.matches("form"));
+    editTask(event.target);
   }
 }
-
 
 //*****
 //show list of users
-function handleshowUserButtonClick() {
-
-}
-handleshowTaskButtonClick
-
-
+function handleshowUserButtonClick() {}
 
 //------------------------------------------------------------------------------
 fetchUserData();
 newTask.addEventListener("click", handleNewTaskClick);
-
 
 newTaskCloseButton.addEventListener("click", handleTaskCloseClick);
 
@@ -623,6 +524,4 @@ highPriorityList.addEventListener("click", handleClickOn_H_L);
 midPriorityList.addEventListener("click", handleClickOn_H_L);
 lowPriorityList.addEventListener("click", handleClickOn_H_L);
 
-showUserButton.addEventListener('click', handleshowUserButtonClick}
-showTaskButton.addEventListener('click', handleshowTaskButtonClick}
 //-------------------------------------
