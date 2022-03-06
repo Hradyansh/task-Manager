@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="style.css">
+  <title>Document</title>
+</head>
+<body>
+
+  <div id="formModal" class="outter_modal hidden">
+      <div class="input_modal">
+        <div class="input_modal_container">
+          <form class="input_form">
+            <label for="message">Task</label>
+            <input class="input" type="text" name="message" autocomplete="off"/>
+
+            <label for="due_date">Compelete Before</label>
+            <input class="input" type="datetime" required name="due_date" placeholder="2020-09-18 12:12:12" />
+
+
+            <label for="priority">How Important Is It?</label>
+            <select class="input" name="priority" autocomplete="off">
+              <option value="1">High</option>
+              <option value="2">Mid</option>
+              <option value="3">Low</option>
+            </select>
+
+            <label for="assigned_to">Deligate this to...</label>
+            <select class="input" id="assigned_to" name="assigned_to" autocomplete="off">
+              <!-- <option value="id_of_user">Arpit</option> -->
+            </select>
+            <br />
+
+            <button id="subBtn" name="creating" class="submitBtn" type="submit" >
+              Create Task
+            </button>
+
+          </form>
+
+          <button class="closeBtn" type="button">×</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="editModal" class="outter_modal hidden">
+        <div class="input_modal">
+          <div class="input_modal_container">
+            <form class="input_form">
+              <label for="message">Task</label>
+              <input class="input" type="text" name="message" autocomplete="off"/>
+
+              <label for="due_date">Compelete Before</label>
+              <input class="input" type="datetime" required name="due_date" placeholder="2020-09-18 12:12:12" />
+
+
+              <label for="priority">How Important Is It?</label>
+              <select class="input" name="priority" autocomplete="off">
+                <option value="1">High</option>
+                <option value="2">Mid</option>
+                <option value="3">Low</option>
+              </select>
+
+              <label for="assigned_to">Deligate this to...</label>
+              <select class="input" id="assigned_to" name="assigned_to" autocomplete="off">
+                <!-- <option value="id_of_user">Arpit</option> -->
+              </select>
+              <br />
+
+              <button id="subBtn" name="editing" class="editBtn" type="submit" >
+                Edit Task
+              </button>
+            </form>
+
+            <button class="closeBtn" type="button">×</button>
+          </div>
+        </div>
+      </div>
+
+
+    <div class="page_function">
+      <button class="addTaskButton" type="button">
+        <img
+          src="https://img.icons8.com/color-glass/344/submit-document.png"
+          alt="add"
+        />
+        <span class="function_info hidden">CREATE TASK<span>
+      </button>
+
+      <br />
+
+      <!-- <button class="showUserButton">
+        <img src="https://img.icons8.com/color-glass/344/user.png" alt="add" />
+        <span class="function_info hidden">LIST OF USERS<span>
+      </button>
+
+      <br />
+
+      <button class="showTaskButton">
+        <img
+          src="https://img.icons8.com/color-glass/344/overview-pages-3.png"
+          alt="add"
+        />
+        <span class="function_info hidden">LIST ALL TASK Task<span>
+      </button> -->
+
+    </div>
+
+    <div class="wrapper">
+      <div class="high_priority container">
+        <br />
+        <br />
+
+        <ul class="high_priority_list ">
+          <br />
+        </ul>
+        <br />
+      </div>
+
+      <div class="mid_priority container">
+        <br />
+        <br />
+
+        <ul class="mid_priority_list ">
+          <br />
+        </ul>
+        <br />
+      </div>
+
+      <div class="low_priority container">
+        <br />
+        <br />
+
+        <ul class="low_priority_list ">
+          <br />
+        </ul>
+        <br />
+      </div>
+    </div>
+
+
+
+    <script type="module" src="index.js"></script>
+
+
+
+</body>
+</html>
